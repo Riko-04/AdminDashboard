@@ -4,8 +4,10 @@ import com.backend.app.dto.GroupRequest;
 import com.backend.app.dto.GroupResponse;
 import com.backend.app.dto.UserResponse;
 import com.backend.app.entity.Group;
+import com.backend.app.entity.GroupUser;
 import com.backend.app.entity.User;
 import com.backend.app.repository.GroupRepository;
+import com.backend.app.repository.GroupUserRepository;
 import com.backend.app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +21,13 @@ public class GroupService {
 
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
+    private final GroupUserRepository groupUserRepository;
 
     @Autowired
-    public GroupService(GroupRepository groupRepository, UserRepository userRepository) {
+    public GroupService(GroupRepository groupRepository, UserRepository userRepository, GroupUserRepository groupUserRepository) {
         this.groupRepository = groupRepository;
         this.userRepository = userRepository;
+        this.groupUserRepository = groupUserRepository;
     }
 
     public List<GroupResponse> getAllGroups() {
@@ -77,28 +81,42 @@ public class GroupService {
         Group group = groupRepository.findById(groupId).orElseThrow(() -> new RuntimeException("Group not found"));
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
-        group.getUsers().add(user);
-        return mapToGroupResponse(groupRepository.save(group));
+        if (!groupUserRepository.existsByGroupAndUser(group, user)) {
+            GroupUser groupUser = GroupUser.builder()
+                    .group(group)
+                    .user(user)
+                    .build();
+            groupUserRepository.save(groupUser);
+        }
+
+        return mapToGroupResponse(group);
     }
 
     public GroupResponse removeUserFromGroup(Long groupId, Long userId) {
         Group group = groupRepository.findById(groupId).orElseThrow(() -> new RuntimeException("Group not found"));
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
-        group.getUsers().remove(user);
-        return mapToGroupResponse(groupRepository.save(group));
+        groupUserRepository.findByGroup(group).stream()
+                .filter(gu -> gu.getUser().equals(user))
+                .findFirst()
+                .ifPresent(groupUserRepository::delete);
+
+        return mapToGroupResponse(group);
     }
 
     private GroupResponse mapToGroupResponse(Group group) {
-        List<UserResponse> userResponses = group.getUsers().stream().map(user ->
-                new UserResponse(
-                        user.getId(),
-                        user.getUsername(),
-                        user.getEmail(),
-                        user.getRole(),
-                        user.getProfileImage()
-                )
-        ).collect(Collectors.toList());
+        List<UserResponse> userResponses = groupUserRepository.findByGroup(group).stream()
+                .map(groupUser -> {
+                    User user = groupUser.getUser();
+                    return new UserResponse(
+                            user.getId(),
+                            user.getUsername(),
+                            user.getEmail(),
+                            user.getRole(),
+                            user.getProfileImage()
+                    );
+                })
+                .collect(Collectors.toList());
 
         return new GroupResponse(
                 group.getId(),

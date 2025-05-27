@@ -1,5 +1,6 @@
 package com.backend.app.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,19 +24,17 @@ public class Group {
     private String description;
 
     @Builder.Default
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "group_users",
-        joinColumns = @JoinColumn(name = "group_id"),
-        inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private Set<User> users = new HashSet<>();
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("group-groupUser")
+    private Set<GroupUser> groupUsers = new HashSet<>();
 
-    public void addUser(User user) {
-        this.users.add(user);
+    public void addGroupUser(GroupUser groupUser) {
+        this.groupUsers.add(groupUser);
+        groupUser.setGroup(this);
     }
 
-    public void removeUser(User user) {
-        this.users.remove(user);
+    public void removeGroupUser(GroupUser groupUser) {
+        this.groupUsers.remove(groupUser);
+        groupUser.setGroup(null);
     }
 }

@@ -1,5 +1,6 @@
 package com.backend.app.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,12 +26,21 @@ public class User {
     private String email;
 
     private String password;
-
     private String role;
-
     private String profileImage;
 
     @Builder.Default
-    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
-    private Set<Group> groups = new HashSet<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("user-groupUser")
+    private Set<GroupUser> groupUsers = new HashSet<>();
+
+    public void addGroupUser(GroupUser groupUser) {
+        this.groupUsers.add(groupUser);
+        groupUser.setUser(this);
+    }
+
+    public void removeGroupUser(GroupUser groupUser) {
+        this.groupUsers.remove(groupUser);
+        groupUser.setUser(null);
+    }
 }
