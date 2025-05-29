@@ -1,0 +1,47 @@
+<div class="contact-container">
+    <div class="contact-form">
+      <h2>Need Any Help?</h2>
+      <p>We’re here for every query</p>
+      <form (ngSubmit)="onSubmit()" #contactForm="ngForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName"[(ngModel)]="user.firstName" name="firstName"  placeholder="Alex" required>
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName"[(ngModel)]="user.lastName" name="lastName" placeholder="Duke" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email"[(ngModel)]="user.email" name="email" placeholder="Alex@mail.com" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone"[(ngModel)]="user.phone" name="phone" placeholder="+254 757219941" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="message">Your Message</label>
+          <textarea id="message"[(ngModel)]="user.message" name="message" rows="4" placeholder="Example Text" required></textarea>
+        </div>
+        <button type="submit" class="btn-submit">Submit</button>
+      </form>
+    </div>
+    <div class="contact-info">
+      <h3>Contact Us</h3>
+      <p>
+        Whether you have questions, feedback, or just want to chat, we’re here for you. Reaching out to us means getting timely responses, insightful solutions, and a team eager to assist. Your thoughts and inquiries are invaluable to us, so don’t hesitate. Connect today and let’s embark on a fruitful conversation.
+      </p>
+      <ul> 
+        <li><strong>Email:</strong>CustomerOnboarding&#64;gmail.com</li>
+        <li><strong>Call Us Now:</strong> (+254)757219941</li>
+        <li><strong>Office Address:</strong> Timeless future,Moi Aveneu, Nairobi</li>
+      </ul>
+    </div>
+  </div>
+
+
+

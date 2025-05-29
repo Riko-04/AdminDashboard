@@ -1,0 +1,89 @@
+<header class="site-footer">
+  <div class="footer-content">
+    <h4>Term of services.</h4>
+  </div>
+</header>
+<div class="terms-container">
+    
+    <h5>Terms of Service</h5>
+    <p class="effective-date">Effective Date: {{ effectiveDate }}</p>
+  
+    <div class="terms-content">
+      <p>Welcome to the Customer Onboarding App ("Service"). These Terms of Service ("Terms") govern your access to and use of our Service.</p>
+  
+      <h6>1. Acceptance of Terms</h6>
+      <p>By accessing or using our Service, you agree to be bound by these Terms. If you disagree with any part, you may not access the Service.</p>
+  
+      <h6>2. Description of Service</h6>
+      <p>Our Service provides customer onboarding solutions including account setup, data collection, integration services, and related features.</p>
+  
+      <h6>3. Eligibility</h6>
+      <p>You must be at least 18 years old to use this Service. By using the Service, you represent that you meet this requirement.</p>
+  
+      <h6>4. User Registration</h6>
+      <p>To access certain features, you must register for an account. You agree to:</p>
+      <ul>
+        <li>Provide accurate and complete registration information</li>
+        <li>Maintain and promptly update your information</li>
+        <li>Maintain the security of your account credentials</li>
+        <li>Accept responsibility for all activities under your account</li>
+      </ul>
+  
+      <h6>5. Acceptable Use</h6>
+      <p>You agree not to:</p>
+      <ul>
+        <li>Use the Service for any illegal purpose</li>
+        <li>Violate any laws in your jurisdiction</li>
+        <li>Upload or transmit viruses or malicious code</li>
+        <li>Attempt to gain unauthorized access to our systems</li>
+        <li>Interfere with the Service's operation</li>
+        <li>Use the Service to harass, abuse, or harm others</li>
+      </ul>
+  
+      <h6>6. Intellectual Property</h6>
+      <p>The Service and its original content, features, and functionality are owned by us and are protected by international copyright, trademark, and other intellectual property laws.</p>
+  
+      <h6>7. User Content</h6>
+      <p>You retain ownership of any content you submit through the Service. By submitting content, you grant us a worldwide, non-exclusive license to use, reproduce, and display such content for providing the Service.</p>
+  
+      <h6>8. Privacy</h6>
+      <p>Your use of the Service is subject to our <a routerLink="/privacy">Privacy Policy</a>, which explains how we collect, use, and protect your information.</p>
+  
+      <h6>9. Termination</h6>
+      <p>We may terminate or suspend your account immediately, without prior notice, for any reason, including violation of these Terms.</p>
+  
+      <h6>10. Disclaimer of Warranties</h6>
+      <p>The Service is provided "AS IS." We disclaim all warranties of any kind, whether express or implied.</p>
+  
+      <h6>11. Limitation of Liability</h6>
+      <p>We shall not be liable for any indirect, incidental, special, or consequential damages resulting from your use of the Service.</p>
+  
+      <h6>12. Changes to Terms</h6>
+      <p>We reserve the right to modify these Terms at any time. We will provide notice of significant changes through the Service.</p>
+  
+      <h6>13. Governing Law</h6>
+      <p>These Terms shall be governed by the laws of [Your Country/State] without regard to its conflict of law provisions.</p>
+  
+      <h6>14. Contact Information</h6>
+      <p>For questions about these Terms, please contact us at:</p>
+      <address>
+        Customer Onboarding App<br>
+        Email: CustomerOnboarding&#64;gmail.com<br>
+        Phone: +1 (555) 123-4567
+      </address>
+    </div>
+  
+    <div class="acceptance-section" *ngIf="!accepted">
+      <div class="checkbox-container">
+        <input type="checkbox" id="acceptTerms" [(ngModel)]="accepted">
+        <label for="acceptTerms">I have read and agree to the Terms of Service</label>
+      </div>
+      <button class="accept-button" [disabled]="!accepted" (click)="acceptTerms()">Accept Terms</button>
+    </div>
+  
+    <div class="accepted-message" *ngIf="accepted">
+      <p>✅ Terms of Service accepted on {{ acceptanceDate | date:'medium' }}</p>
+    </div>
+  </div>
+
+
