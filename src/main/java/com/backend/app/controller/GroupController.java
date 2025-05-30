@@ -20,38 +20,28 @@ public class GroupController {
         this.groupService = groupService;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<GroupResponse> getAllGroups() {
         return groupService.getAllGroups();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public GroupResponse getGroupById(@PathVariable Long id) {
         return groupService.getGroupById(id);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Map<String, Object>> createGroup(@RequestBody GroupRequest request) {
         return groupService.createGroup(request);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/update/{id}")
     public ResponseEntity<Map<String, Object>> updateGroup(@PathVariable Long id, @RequestBody GroupRequest request) {
         return groupService.updateGroup(id, request);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Map<String, String>> deleteGroup(@PathVariable Long id) {
         return groupService.deleteGroup(id);
-    }
-
-    @PostMapping("/{groupId}/users/{userId}")
-    public GroupResponse addUserToGroup(@PathVariable Long groupId, @PathVariable Long userId) {
-        return groupService.addUserToGroup(groupId, userId);
-    }
-
-    @DeleteMapping("/{groupId}/users/{userId}")
-    public GroupResponse removeUserFromGroup(@PathVariable Long groupId, @PathVariable Long userId) {
-        return groupService.removeUserFromGroup(groupId, userId);
     }
 }

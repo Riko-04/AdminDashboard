@@ -10,4 +10,5 @@ import java.util.List;
 public interface GroupUserRepository extends JpaRepository<GroupUser, Long> {
     List<GroupUser> findByGroup(Group group);
     boolean existsByGroupAndUser(Group group, User user);
+    List<GroupUser> findByUser(User user);
 }

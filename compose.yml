@@ -1,0 +1,40 @@
+version: "2.4"
+# Docker Compose file for KYC Backend with MySQL
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=customers_db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+    ports:
+      - 3307:3306
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 12s
+      timeout: 6s
+      retries: 5
+
+  backend:
+    image: riko04/kyc-backend-01:latest
+    container_name: kyc_backend
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/customers_db
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=password
+    env_file:
+      - .env
+    ports:
+      - 8080:8080
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+volumes:
+  mysql_data:
+    driver: local

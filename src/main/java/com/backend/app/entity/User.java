@@ -1,11 +1,14 @@
 package com.backend.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -27,7 +30,6 @@ public class User {
 
     private String password;
     private String role;
-    private String profileImage;
 
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -42,5 +44,12 @@ public class User {
     public void removeGroupUser(GroupUser groupUser) {
         this.groupUsers.remove(groupUser);
         groupUser.setUser(null);
+    }
+
+    @JsonProperty("groups")
+    public Set<Group> getGroups() {
+        return groupUsers.stream()
+                .map(GroupUser::getGroup)
+                .collect(Collectors.toSet());
     }
 }

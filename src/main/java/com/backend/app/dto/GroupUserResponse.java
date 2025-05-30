@@ -1,5 +1,7 @@
 package com.backend.app.dto;
 
+import java.util.List;
+
 import lombok.*;
 
 @Builder
@@ -8,11 +10,19 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GroupUserResponse {
-    private Long id;
-    private Long groupId;
+    private Long userId;
     private String groupName;
     private String username;
     private String email;
     private String role;
-    private String profileImage;
+
+    private List<GroupSummary> groups;
+
+    @Data
+    @Builder
+    public static class GroupSummary {
+        private Long groupId;
+        private String groupName;
+        private String description;
+    }
 }

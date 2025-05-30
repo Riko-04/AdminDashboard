@@ -22,7 +22,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     @PreAuthorize("hasRole('ADMIN')")
     public List<UserResponse> getAllUsers() {
         return userService.getAllUsers();
@@ -34,7 +34,7 @@ public class UserController {
         return user != null ? ResponseEntity.ok(user) : ResponseEntity.status(404).build();
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<?> createUser(@Valid @RequestBody UserRequest userRequest) {
         if (userService.existsByUsernameOrEmail(userRequest.getUsername(), userRequest.getEmail())) {
             return ResponseEntity.badRequest().body("User already exists");
@@ -45,13 +45,13 @@ public class UserController {
         return ResponseEntity.status(201).body(userResponse);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/update/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserRequest updatedUserRequest) {
         UserResponse updatedUser = userService.updateUser(id, updatedUserRequest);
         return updatedUser != null ? ResponseEntity.ok(updatedUser) : ResponseEntity.status(404).body("User not found");
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         if (!userService.existsById(id)) {
             return ResponseEntity.status(404).body("User not found");

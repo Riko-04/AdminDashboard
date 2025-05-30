@@ -70,7 +70,6 @@ public class UserService {
         user.setUsername(updatedUserRequest.getUsername() != null ? updatedUserRequest.getUsername() : user.getUsername());
         user.setEmail(updatedUserRequest.getEmail() != null ? updatedUserRequest.getEmail() : user.getEmail());
         user.setRole(updatedUserRequest.getRole() != null ? updatedUserRequest.getRole() : user.getRole());
-        user.setProfileImage(updatedUserRequest.getProfileImage() != null ? updatedUserRequest.getProfileImage() : user.getProfileImage());
 
         userRepository.save(user);
         return convertToUserResponse(user);
@@ -81,7 +80,7 @@ public class UserService {
     }
 
     private UserResponse convertToUserResponse(User user) {
-        return new UserResponse(user.getId(), user.getUsername(), user.getEmail(), user.getRole(), user.getProfileImage());
+        return new UserResponse(user.getId(), user.getUsername(), user.getEmail(), user.getRole());
     }
 
     private User convertToUser(UserRequest userRequest) {
@@ -90,7 +89,6 @@ public class UserService {
                    .email(userRequest.getEmail())
                    .password(userRequest.getPassword()) 
                    .role(userRequest.getRole())
-                   .profileImage(userRequest.getProfileImage())
                    .build();
     }
 }
